@@ -10,12 +10,18 @@
 #*****************************************************************************
 
 #------------------------------------------------------------------------------
-# <Put a Description Here>
+# Simple makefile for the cortex-M0+ build system
 #
 # Use: make [TARGET] [PLATFORM-OVERRIDES]
 #
 # Build Targets:
-#      <Put a description of the supported targets here>
+#      <FILE>.i - Generates the <FILE>.i preprocessed output file
+#      <FILE>.asm - Generates <FILE>.asm assembly output file
+#      <FILE>.o - Builds <FILE>.o object file but does not link
+#      build - Compiles all object files and link into a final executable
+#      compile-all - Compiles all object files, but DOES NOT link
+#      clean - remove all compiled objects, preprocessed outputs, assembly
+#              outputs, executable files and build output files
 #
 # Platform Overrides:
 #      <Put a description of the supported Overrides here
