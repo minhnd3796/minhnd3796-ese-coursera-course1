@@ -55,8 +55,7 @@ else
     CFLAGS += -mcpu=$(CPU) -m$(ARCH) --specs=$(SPECS) \
         -march=armv7e-m							\
         -mfloat-abi=hard						\
-        -mfpu=fpv4-sp-d16						\
-        -DMSP432
+        -mfpu=fpv4-sp-d16
     LDFLAGS = -Wl,-Map=$(TARGET).map -T ../$(LINKER_FILE)
 endif
 
