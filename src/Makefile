@@ -35,12 +35,11 @@ LINKER_FILE = msp432p401r.lds
 CPU = cortex-m4
 ARCH = thumb
 SPECS = nosys.specs
-
 CFLAGS = -Wall -Werror -g -O0 -std=c99
 
 # Compiler Flags and Defines
 TARGET = c1m2
-CPPFLAGS = -D$(PLATFORM)
+CPPFLAGS = -D$(PLATFORM) -MMD -MP
 ifeq ($(PLATFORM), HOST)
     CC = gcc
     LD = ld
@@ -60,6 +59,7 @@ else
 endif
 
 OBJS = $(SOURCES:.c=.o)
+DEPS = $(SOURCES:.o=.d)
 
 %.i: %.c
 	$(CC) -E $< $(CFLAGS) $(CPPFLAGS) $(INCLUDES) -o $@
@@ -83,4 +83,4 @@ $(TARGET).asm: build
 
 .PHONY: clean
 clean:
-	rm -f *.o $(TARGET).out $(TARGET).map *.asm *.i
+	rm -f *.o *.out *.map *.asm *.i *.d
