@@ -36,6 +36,8 @@ CPU = cortex-m4
 ARCH = thumb
 SPECS = nosys.specs
 
+CFLAGS = -Wall -Werror -g -O0 -std=c99
+
 # Compiler Flags and Defines
 TARGET = c1m2
 ifeq ($(PLATFORM), HOST)
@@ -43,15 +45,14 @@ ifeq ($(PLATFORM), HOST)
     LD = ld
     OBJDMP = objdump
     SIZE = size
-    CFLAGS = -Wall -Werror -g -O0 -std=c99 -DHOST
+    CFLAGS += -DHOST
     LDFLAGS = -Wl,-Map=$(TARGET).map
 else
     CC = arm-none-eabi-gcc
     LD = arm-none-eabi-ld
     OBJDMP = arm-none-eabi-objdump
     SIZE = arm-none-eabi-size
-    CFLAGS = -Wall -Werror -g -O0 -std=c99		\
-        -mcpu=$(CPU) -m$(ARCH) --specs=$(SPECS) \
+    CFLAGS += -mcpu=$(CPU) -m$(ARCH) --specs=$(SPECS) \
         -march=armv7e-m							\
         -mfloat-abi=hard						\
         -mfpu=fpv4-sp-d16						\
