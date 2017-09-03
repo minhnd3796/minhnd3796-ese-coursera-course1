@@ -40,12 +40,12 @@ CFLAGS = -Wall -Werror -g -O0 -std=c99
 
 # Compiler Flags and Defines
 TARGET = c1m2
+CPPFLAGS = -D$(PLATFORM)
 ifeq ($(PLATFORM), HOST)
     CC = gcc
     LD = ld
     OBJDMP = objdump
     SIZE = size
-    CFLAGS += -DHOST
     LDFLAGS = -Wl,-Map=$(TARGET).map
 else
     CC = arm-none-eabi-gcc
@@ -63,20 +63,23 @@ endif
 OBJS = $(SOURCES:.c=.o)
 
 %.i: %.c
-	$(CC) -E $< $(CFLAGS) $(INCLUDES) -o $@
+	$(CC) -E $< $(CFLAGS) $(CPPFLAGS) $(INCLUDES) -o $@
 
 %.asm: %.c
-	$(CC) -S $< $(CFLAGS) $(INCLUDES) -o $@
+	$(CC) -S $< $(CFLAGS) $(CPPFLAGS) $(INCLUDES) -o $@
 
 %.o: %.c
-	$(CC) -c $< $(CFLAGS) $(INCLUDES) -o $@
+	$(CC) -c $< $(CFLAGS) $(CPPFLAGS) $(INCLUDES) -o $@
+
+.PHONY: all
+all: build
 
 .PHONY: compile-all
 compile-all: $(OBJS)
 
 .PHONY: build
 build: compile-all
-	$(CC) $(OBJS) $(CFLAGS) $(INCLUDES) $(LDFLAGS) -o $(TARGET).out
+	$(CC) $(OBJS) $(CFLAGS) $(CPPFLAGS) $(INCLUDES) $(LDFLAGS) -o $(TARGET).out
 	$(SIZE) -Atd $(OBJS) $(TARGET).out
 
 $(TARGET).asm: build
