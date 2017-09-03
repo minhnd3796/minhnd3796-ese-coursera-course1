@@ -41,11 +41,15 @@ TARGET = c1m2
 ifeq ($(PLATFORM), HOST)
     CC = gcc
     LD = ld
+    OBJDMP = objdump
+    SIZE = size
     CFLAGS = -Wall -Werror -g -O0 -std=c99 -DHOST
     LDFLAGS = -Wl,-Map=$(TARGET).map
 else
     CC = arm-none-eabi-gcc
     LD = arm-none-eabi-ld
+    OBJDMP = arm-none-eabi-objdump
+    SIZE = arm-none-eabi-size
     CFLAGS = -Wall -Werror -g -O0 -std=c99		\
         -mcpu=$(CPU) -m$(ARCH) --specs=$(SPECS) \
         -march=armv7e-m							\
@@ -72,6 +76,10 @@ compile-all: $(OBJS)
 .PHONY: build
 build: compile-all
 	$(CC) $(OBJS) $(CFLAGS) $(INCLUDES) $(LDFLAGS) -o $(TARGET).out
+	$(SIZE) -Atd $(OBJS) $(TARGET).out
+
+$(TARGET).asm: build
+	$(OBJDMP) --disassemble $(TARGET).out > $(TARGET).asm
 
 .PHONY: clean
 clean:
