@@ -40,24 +40,22 @@ SPECS = nosys.specs
 TARGET = c1m2
 ifeq ($(PLATFORM), HOST)
     CC = gcc
-	LD = ld
-	CFLAGS = -Wall -Werror -g -O0 -std=c99 -DHOST
-	LDFLAGS = -Wl,-Map=$(TARGET).map
+    LD = ld
+    CFLAGS = -Wall -Werror -g -O0 -std=c99 -DHOST
+    LDFLAGS = -Wl,-Map=$(TARGET).map
 else
-	CC = arm-none-eabi-gcc
-	LD = arm-none-eabi-ld
-	CFLAGS = -Wall -Werror -g -O0 -std=c99		\
-		-mcpu=$(CPU) -m$(ARCH) --specs=$(SPECS) \
-		-march=armv7e-m							\
-		-mfloat-abi=hard						\
-		-mfpu=fpv4-sp-d16						\
-		-DMSP432
-	LDFLAGS = -Wl,-Map=$(TARGET).map -T ../$(LINKER_FILE)
+    CC = arm-none-eabi-gcc
+    LD = arm-none-eabi-ld
+    CFLAGS = -Wall -Werror -g -O0 -std=c99		\
+        -mcpu=$(CPU) -m$(ARCH) --specs=$(SPECS) \
+        -march=armv7e-m							\
+        -mfloat-abi=hard						\
+        -mfpu=fpv4-sp-d16						\
+        -DMSP432
+    LDFLAGS = -Wl,-Map=$(TARGET).map -T ../$(LINKER_FILE)
 endif
 
 OBJS = $(SOURCES:.c=.o)
-ASM = $(SOURCES:.c=.asm)
-PREP = $(SOURCES:.c=.i)
 
 %.i: %.c
 	$(CC) -E $< $(CFLAGS) $(INCLUDES) -o $@
