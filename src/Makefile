@@ -70,9 +70,6 @@ OBJS = $(SOURCES:.c=.o)
 %.o: %.c
 	$(CC) -c $< $(CFLAGS) $(CPPFLAGS) $(INCLUDES) -o $@
 
-.PHONY: all
-all: build
-
 .PHONY: compile-all
 compile-all: $(OBJS)
 
